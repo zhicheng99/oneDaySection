@@ -27,6 +27,8 @@
 </template> 
 <script>
 import { Drag } from "./../lib/Drag.js";
+import { EleResize } from "./../lib/EleResize.js";
+
 import VerticalLines from "./VerticalLines.vue";
 import HorizontalLines from "./HorizontalLines.vue";
 export default {
@@ -250,10 +252,26 @@ export default {
       // console.log(tmp);
       this.horizontalLines = tmp;
     },
+    resize: function () {
+      this.$nextTick(() => {
+        this.areaWidth = document.getElementById("timeOfDay_lay").offsetWidth;
+        this.initNext();
+      });
+    },
   },
   mounted() {
     // this.initTime();
     this.$nextTick(this.init);
+    EleResize.on(
+      document.getElementById("timeOfDay_lay"),
+      this.resize.bind(this)
+    );
+  },
+  destroyed() {
+    EleResize.off(
+      document.getElementById("timeOfDay_lay"),
+      this.resize.bind(this)
+    );
   },
   watch: {
     startTime: {
