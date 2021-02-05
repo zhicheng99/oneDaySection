@@ -1,11 +1,8 @@
 <template>
   <div>
-    <div>
-      {{ title }}
-    </div>
-    <div id="timeOfDay_lay" style="margin-top: 10px">
-      <div class="start">{{ start | format }}</div>
-      <div class="end">{{ end | format }}</div>
+    <div id="timeOfDay_lay" style="margin-top: 30px">
+      <div class="start" v-html="format(start)"></div>
+      <div class="end" v-html="format(end)"></div>
 
       <!-- 竖线 -->
       <VerticalLines v-bind:vertical-lines="verticalLines"></VerticalLines>
@@ -63,6 +60,9 @@ export default {
     },
   },
   methods: {
+    format: function (v) {
+      return v.split(" ").join("<br>");
+    },
     resetRange: function (dragInstance) {
       if (this.sublings.length === 0) {
         var sublings = dragInstance.drag.parentNode.children;
@@ -89,7 +89,6 @@ export default {
           currIndex = i;
         }
       }
-
       if (currIndex === 0) {
         //console.log(tmp[currIndex - 1].style.left.replace("px", ""));
         dragInstance.options.range = [
@@ -106,6 +105,8 @@ export default {
             : this.areaWidth,
         ];
       }
+
+      // console.log(dragInstance.options.range);
       this.handleIndex = currIndex;
     },
     handleMove: function (x) {
@@ -141,9 +142,15 @@ export default {
       // console.log(tmp);
 
       //重置this.section
-      this.section[this.handleIndex][1] = tmp;
-      this.section[this.handleIndex + 1] &&
-        (this.section[this.handleIndex + 1][0] = tmp);
+      if (this.handleIndex === 0) {
+        this.section[this.handleIndex][0] = tmp;
+      } else if (this.handleIndex > 0) {
+        this.section[this.handleIndex - 1][1] = tmp;
+
+        this.section[this.handleIndex] &&
+          (this.section[this.handleIndex][0] = tmp);
+      }
+
       // console.log(this.section);
       this.initNext();
     },
@@ -192,7 +199,15 @@ export default {
       //每一项的[1]做为指针指向的时间
       //再根据第一个指针所对应的时间 算出在时间轴上的位置
       let startTime = new Date(this.startTime).getTime();
-      let tmp = [];
+      let tmp = [
+        {
+          left:
+            ((new Date(this.section[0][0]).getTime() - startTime) /
+              this.totalDuring) *
+            this.areaWidth,
+          time: this.section[0][0],
+        },
+      ];
       for (let i = 0; i < this.section.length; i++) {
         tmp.push({
           left:
@@ -207,10 +222,14 @@ export default {
       this.handlers = tmp;
     },
     createVerticalLine: function () {
+      let startTime = new Date(this.startTime).getTime();
       //根据this.handlers生成坚向的指示线
       this.verticalLines = [
         {
-          left: 0,
+          left:
+            ((new Date(this.section[0][0]).getTime() - startTime) /
+              this.totalDuring) *
+            this.areaWidth,
           time: this.startTime,
         },
       ].concat(this.handlers);
@@ -311,7 +330,7 @@ export default {
 <style scoped>
 #timeOfDay_lay {
   width: 100%;
-  height: 2px;
+  border-top: solid blue 2px;
   position: relative;
   background: blue;
   user-select: none;
@@ -333,16 +352,20 @@ export default {
 }
 .start {
   position: absolute;
+  text-align: left;
   left: 0;
-  top: -15px;
+  top: -30px;
   font-size: 12px;
+  line-height: 14px;
   pointer-events: none;
 }
 .end {
   position: absolute;
+  text-align: right;
   right: 0;
-  top: -15px;
+  top: -30px;
   font-size: 12px;
+  line-height: 14px;
   pointer-events: none;
 }
 </style>

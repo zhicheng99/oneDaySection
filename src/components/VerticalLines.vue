@@ -6,7 +6,7 @@
       :key="index"
       v-bind:style="{ left: item.left + 'px' }"
     >
-      <div>{{ item.time }}</div>
+      <div>{{ item.time | format }}</div>
     </div>
   </div>
 </template> 
@@ -18,6 +18,11 @@ export default {
     return {
       // lines: [],
     };
+  },
+  filters: {
+    format: function (v) {
+      return v.split(" ")[1];
+    },
   },
   // watch: {
   //   verticalLines: {
@@ -41,12 +46,12 @@ export default {
 }
 .verticalLine div {
   position: absolute;
-  bottom: -15px;
+  bottom: -12px;
   left: 0;
   white-space: nowrap;
   font-size: 12px;
   transform-origin: 0% 50%;
-  transform: rotate(45deg);
+  transform: rotate(35deg);
   pointer-events: none;
 }
 </style>

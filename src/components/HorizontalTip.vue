@@ -75,6 +75,7 @@ export default {
   font-size: 12px;
   color: blue;
   pointer-events: none;
+  text-align: center;
 }
 .tip span {
   background: #fff;
