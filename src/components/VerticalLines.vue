@@ -1,0 +1,52 @@
+<template>
+  <div>
+    <div
+      class="verticalLine"
+      v-for="(item, index) in verticalLines"
+      :key="index"
+      v-bind:style="{ left: item.left + 'px' }"
+    >
+      <div>{{ item.time }}</div>
+    </div>
+  </div>
+</template> 
+
+<script>
+export default {
+  props: ["verticalLines"],
+  data() {
+    return {
+      // lines: [],
+    };
+  },
+  // watch: {
+  //   verticalLines: {
+  //     handler: function (v) {
+  //       this.lines = v;
+  //     },
+  //     immediate: true,
+  //   },
+  // },
+};
+</script>
+
+<style scoped>
+.verticalLine {
+  position: absolute;
+  top: 2px;
+  width: 0;
+  height: 30px;
+  border-left: dashed #333 1px;
+  pointer-events: none;
+}
+.verticalLine div {
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+  white-space: nowrap;
+  font-size: 12px;
+  transform-origin: 0% 50%;
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+</style>
