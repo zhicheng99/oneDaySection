@@ -3,7 +3,6 @@
     <div
       class="horizontalLine"
       v-for="(item, index) in horizontalLines"
-      v-if="index > 0"
       :key="index"
       v-bind:style="{ left: item.left + 'px', width: item.width + 'px' }"
     >

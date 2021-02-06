@@ -222,17 +222,8 @@ export default {
       this.handlers = tmp;
     },
     createVerticalLine: function () {
-      let startTime = new Date(this.startTime).getTime();
       //根据this.handlers生成坚向的指示线
-      this.verticalLines = [
-        {
-          left:
-            ((new Date(this.section[0][0]).getTime() - startTime) /
-              this.totalDuring) *
-            this.areaWidth,
-          time: this.startTime,
-        },
-      ].concat(this.handlers);
+      this.verticalLines = [].concat(this.handlers);
       // console.log(this.verticalLines);
     },
     caleDuring: function (s, e) {
@@ -346,7 +337,9 @@ export default {
   top: 0;
   left: 0;
   position: absolute;
+  -webkit-transform-origin: 0% 0%;
   transform-origin: 0% 0%;
+  -webkit-transform: rotate(20deg);
   transform: rotate(20deg);
   /* background: red; */
 }

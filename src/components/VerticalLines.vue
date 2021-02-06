@@ -31,7 +31,7 @@ export default {
   //     },
   //     immediate: true,
   //   },
-  // },
+  // }
 };
 </script>
 
@@ -50,7 +50,9 @@ export default {
   left: 0;
   white-space: nowrap;
   font-size: 12px;
+  -webkit-transform-origin: 0% 50%;
   transform-origin: 0% 50%;
+  -webkit-transform: rotate(35deg);
   transform: rotate(35deg);
   pointer-events: none;
 }
